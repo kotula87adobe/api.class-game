@@ -5,13 +5,15 @@ import { AppService } from './app.service';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { UserModule } from './user/user.module';
 import { VisitModule } from './visit/visit.module';
+import { AnswerModule } from './answer/answer.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
     DashboardModule,
     UserModule,
-    VisitModule
+    VisitModule,
+    AnswerModule
   ],
   controllers: [AppController],
   providers: [AppService],

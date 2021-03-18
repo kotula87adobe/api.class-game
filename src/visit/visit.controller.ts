@@ -12,23 +12,4 @@ export class VisitController {
     return this.visitService.create(createVisitDto);
   }
 
-  @Get()
-  findAll() {
-    return this.visitService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.visitService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVisitDto: UpdateVisitDto) {
-    return this.visitService.update(+id, updateVisitDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.visitService.remove(+id);
-  }
 }

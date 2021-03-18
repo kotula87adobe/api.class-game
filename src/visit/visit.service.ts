@@ -1,26 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { CreateVisitDto } from './dto/create-visit.dto';
 import { UpdateVisitDto } from './dto/update-visit.dto';
+import {Visit} from "./entities/visit.entity";
+import {User} from "../user/entities/user.entity";
 
 @Injectable()
 export class VisitService {
-  create(createVisitDto: CreateVisitDto) {
-    return 'This action adds a new visit';
+
+  async create(createVisitDto: CreateVisitDto): Promise<Visit> {
+
+    const user = await User.findOne(createVisitDto.userId)
+
+    const visit = new Visit();
+    visit.user = user
+    await visit.save()
+
+    return visit
   }
 
-  findAll() {
-    return `This action returns all visit`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} visit`;
-  }
-
-  update(id: number, updateVisitDto: UpdateVisitDto) {
-    return `This action updates a #${id} visit`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} visit`;
-  }
 }

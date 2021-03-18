@@ -1,1 +1,5 @@
-export class CreateVisitDto {}
+export class CreateVisitDto {
+
+  userId: string
+
+}
