@@ -9,6 +9,7 @@ import {CreateAnswerDto} from "../answer/dto/create-answer.dto";
 import {Visit} from "../visit/entities/visit.entity";
 import {User} from "../user/entities/user.entity";
 import {Answer} from "../answer/entities/answer.entity";
+import {OwnerService} from "../owner/owner.service";
 
 @Injectable()
 export class DashboardService {
@@ -17,6 +18,7 @@ export class DashboardService {
     @Inject(UserService) private userService: UserService,
     @Inject(VisitService) private visitService: VisitService,
     @Inject(AnswerService) private answerService: AnswerService,
+    @Inject(OwnerService) private ownerService: OwnerService,
   ) {
 
   }

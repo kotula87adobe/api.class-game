@@ -6,6 +6,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { UserModule } from './user/user.module';
 import { VisitModule } from './visit/visit.module';
 import { AnswerModule } from './answer/answer.module';
+import { OwnerModule } from './owner/owner.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { AnswerModule } from './answer/answer.module';
     DashboardModule,
     UserModule,
     VisitModule,
-    AnswerModule
+    AnswerModule,
+    OwnerModule
   ],
   controllers: [AppController],
   providers: [AppService],

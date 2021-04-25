@@ -4,12 +4,14 @@ import { DashboardController } from './dashboard.controller';
 import {UserModule} from "../user/user.module";
 import {VisitModule} from "../visit/visit.module";
 import {AnswerModule} from "../answer/answer.module";
+import {OwnerModule} from "../owner/owner.module";
 
 @Module({
   imports: [
     forwardRef(()=>UserModule),
     forwardRef(()=>VisitModule),
     forwardRef(()=>AnswerModule),
+    forwardRef(()=>OwnerModule),
   ],
   controllers: [DashboardController],
   providers: [DashboardService]
