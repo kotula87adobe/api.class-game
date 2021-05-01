@@ -10,6 +10,9 @@ import {Visit} from "../visit/entities/visit.entity";
 import {User} from "../user/entities/user.entity";
 import {Answer} from "../answer/entities/answer.entity";
 import {OwnerService} from "../owner/owner.service";
+import {CreateUserResponse} from "../interfaces/user";
+import {CreateOwnerDto} from "../owner/dto/create-owner.dto";
+import {CreateOwnerResponse} from "../interfaces/owner";
 
 @Injectable()
 export class DashboardService {
@@ -23,7 +26,16 @@ export class DashboardService {
 
   }
 
-  createUser(createUserDto: CreateUserDto): Promise<User> {
+  // Owner
+
+  createOwner(createOwnerDto: CreateOwnerDto): Promise<CreateOwnerResponse>{
+    return this.ownerService.create(createOwnerDto)
+  }
+
+
+  // User
+
+  createUser(createUserDto: CreateUserDto): Promise<CreateUserResponse> {
     return this.userService.create(createUserDto);
   }
 

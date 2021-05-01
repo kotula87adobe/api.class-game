@@ -3,13 +3,18 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 import {User} from './entities/user.entity'
+import {Owner} from "../owner/entities/owner.entity";
+import {CreateUserResponse} from "../interfaces/user";
 
 @Injectable()
 export class UserService {
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<CreateUserResponse> {
 
     const user = new User()
+
+    const owner = await Owner.findOne(createUserDto.ownerId)
+    user.owner = owner
     await user.save()
 
     return user;

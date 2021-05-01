@@ -1,5 +1,6 @@
-import {BaseEntity, Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Visit} from "../../visit/entities/visit.entity";
+import {Owner} from "../../owner/entities/owner.entity";
 
 @Entity()
 export class User extends BaseEntity{
@@ -10,13 +11,17 @@ export class User extends BaseEntity{
   @Column()
   name: String
 
-  @Column({
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  createdAt: Date;
+  @ManyToOne(type=>Owner,entity => entity.user,{onDelete: "CASCADE"})
+  @JoinColumn()
+  owner: Owner
 
   @OneToMany(type => Visit, entity => entity.user)
   @JoinColumn()
   visit: Visit
+
+  @Column({
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: Date;
 
 }
