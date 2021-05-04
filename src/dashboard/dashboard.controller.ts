@@ -16,10 +16,10 @@ export class DashboardController {
 
   // Owner
 
-  @Post('/owner')
-  createOwner(@Body() createOwnerDto: CreateOwnerDto): Promise<CreateOwnerResponse> {
-    return this.dashboardService.createOwner(createOwnerDto)
-  }
+  // @Post('/owner')
+  // createOwner(@Body() createOwnerDto: CreateOwnerDto): Promise<CreateOwnerResponse> {
+  //   return this.dashboardService.createOwner(createOwnerDto)
+  // }
 
 
   // User

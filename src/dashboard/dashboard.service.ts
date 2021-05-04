@@ -22,16 +22,13 @@ export class DashboardService {
     @Inject(VisitService) private visitService: VisitService,
     @Inject(AnswerService) private answerService: AnswerService,
     @Inject(OwnerService) private ownerService: OwnerService,
-  ) {
-
-  }
+  ) {}
 
   // Owner
 
   createOwner(createOwnerDto: CreateOwnerDto): Promise<CreateOwnerResponse>{
     return this.ownerService.create(createOwnerDto)
   }
-
 
   // User
 

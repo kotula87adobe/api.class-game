@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { VisitModule } from './visit/visit.module';
 import { AnswerModule } from './answer/answer.module';
 import { OwnerModule } from './owner/owner.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { OwnerModule } from './owner/owner.module';
     UserModule,
     VisitModule,
     AnswerModule,
-    OwnerModule
+    OwnerModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -14,6 +14,7 @@ import {OwnerModule} from "../owner/owner.module";
     forwardRef(()=>OwnerModule),
   ],
   controllers: [DashboardController],
-  providers: [DashboardService]
+  providers: [DashboardService],
+  exports: [DashboardService]
 })
 export class DashboardModule {}
