@@ -8,6 +8,7 @@ import { VisitModule } from './visit/visit.module';
 import { AnswerModule } from './answer/answer.module';
 import { OwnerModule } from './owner/owner.module';
 import { AuthModule } from './auth/auth.module';
+import { SessionTokenModule } from './session-token/session-token.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { AuthModule } from './auth/auth.module';
     VisitModule,
     AnswerModule,
     OwnerModule,
-    AuthModule
+    AuthModule,
+    SessionTokenModule
   ],
   controllers: [AppController],
   providers: [AppService],

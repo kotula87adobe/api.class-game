@@ -6,9 +6,9 @@ import {CreateAnswerDto} from "../answer/dto/create-answer.dto";
 import {Visit} from "../visit/entities/visit.entity";
 import {User} from "../user/entities/user.entity";
 import {Answer} from "../answer/entities/answer.entity";
-import {CreateUserResponse} from "../interfaces/user";
+import {CreateUserResponse} from "../interfaces/createUser";
 import {CreateOwnerDto} from "../owner/dto/create-owner.dto";
-import {CreateOwnerResponse} from "../interfaces/owner";
+import {CreateOwnerResponse} from "../interfaces/createOwner";
 
 @Controller('dashboard')
 export class DashboardController {

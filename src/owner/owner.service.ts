@@ -1,14 +1,30 @@
-import { Injectable } from '@nestjs/common';
-
-const bcrypt = require('bcrypt');
-
-import {CreateOwnerResponse} from "../interfaces/owner";
+import {Injectable} from '@nestjs/common';
+import {CreateOwnerResponse} from "../interfaces/createOwner";
 import {CreateOwnerDto} from "./dto/create-owner.dto";
 import {Owner} from "./entities/owner.entity";
+import {LogInOwnerResponse} from "../interfaces/logInOwner";
+import {LogInOwnerDto} from "./dto/log-in-owner.dto";
+
+const bcrypt = require('bcrypt');
 
 
 @Injectable()
 export class OwnerService {
+
+  hashPassword(password): string{
+
+    const saltRounds = 10;
+
+    const hash = bcrypt.hashSync(password, saltRounds);
+
+    return hash
+
+  }
+
+  checkPassword(password, hash){
+    const compareTest = bcrypt.compareSync(password, hash); // true
+    return compareTest
+  }
 
   validatePassword(pass: string): string  | boolean{
       if(pass.length<5){
@@ -44,11 +60,7 @@ export class OwnerService {
 
     const owner = new Owner();
     owner.email = createOwnerDto.email
-
-    const saltRounds = 10;
-
-    const hash = bcrypt.hashSync(newPassword, saltRounds);
-    owner.password = hash
+    owner.password = this.hashPassword(newPassword)
 
     // const compareTest = bcrypt.compareSync(newPassword, hash); // true
     // console.log({compareTest})
@@ -62,4 +74,26 @@ export class OwnerService {
     }
   }
 
+  async logIn(logInOwnerDto: LogInOwnerDto): Promise<LogInOwnerResponse> {
+
+    // const authToken = new  //TODO
+
+    const owner = await Owner.findOne({
+      email: logInOwnerDto.email,
+    })
+
+
+    if(this.checkPassword(logInOwnerDto.password,owner.password)){
+      return {
+        status: true,
+        ownerId: owner.id,
+        authToken: 'TODO'
+      }
+    }else{
+      return {status: false, error: 'Wrong password'}
+    }
+
+    return {status: true, authToken: '12122', ownerId: 'dscds'};
+
+  }
 }

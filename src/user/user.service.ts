@@ -4,7 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 import {User} from './entities/user.entity'
 import {Owner} from "../owner/entities/owner.entity";
-import {CreateUserResponse} from "../interfaces/user";
+import {CreateUserResponse} from "../interfaces/createUser";
 
 @Injectable()
 export class UserService {

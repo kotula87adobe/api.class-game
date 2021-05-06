@@ -10,9 +10,9 @@ import {Visit} from "../visit/entities/visit.entity";
 import {User} from "../user/entities/user.entity";
 import {Answer} from "../answer/entities/answer.entity";
 import {OwnerService} from "../owner/owner.service";
-import {CreateUserResponse} from "../interfaces/user";
+import {CreateUserResponse} from "../interfaces/createUser";
 import {CreateOwnerDto} from "../owner/dto/create-owner.dto";
-import {CreateOwnerResponse} from "../interfaces/owner";
+import {CreateOwnerResponse} from "../interfaces/createOwner";
 
 @Injectable()
 export class DashboardService {
