@@ -9,6 +9,7 @@ import { AnswerModule } from './answer/answer.module';
 import { OwnerModule } from './owner/owner.module';
 import { AuthModule } from './auth/auth.module';
 import { SessionTokenModule } from './session-token/session-token.module';
+import { OwnerSessionTokenModule } from './owner-session-token/owner-session-token.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { SessionTokenModule } from './session-token/session-token.module';
     AnswerModule,
     OwnerModule,
     AuthModule,
-    SessionTokenModule
+    SessionTokenModule,
+    OwnerSessionTokenModule
   ],
   controllers: [AppController],
   providers: [AppService],

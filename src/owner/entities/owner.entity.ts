@@ -1,6 +1,7 @@
 import {BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 
 import {User} from "../../user/entities/user.entity";
+import {OwnerSessionToken} from "../../owner-session-token/entities/ownerSessionToken.entity";
 
 @Entity()
 export class Owner extends BaseEntity {
@@ -24,6 +25,10 @@ export class Owner extends BaseEntity {
   @OneToMany(type => User, entity => entity.owner)
   @JoinColumn()
   user: User
+
+  @OneToMany(type => OwnerSessionToken, entity => entity.owner)
+  @JoinColumn()
+  ownerSessionToken: OwnerSessionToken
 
   @Column()
   updatedAt: Date
