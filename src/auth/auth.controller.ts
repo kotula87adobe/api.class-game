@@ -1,10 +1,13 @@
-import {Controller, Get, Post, Delete, Put, Patch, Body} from '@nestjs/common';
+import {Controller, Get, Post, Delete, Put, Patch, Body, Req} from '@nestjs/common';
 import {CreateOwnerDto} from "../owner/dto/create-owner.dto";
 import {CreateOwnerResponse} from "../interfaces/createOwner";
 import {DashboardService} from "../dashboard/dashboard.service";
 import {AuthService} from "./auth.service";
-import {LogInOwnerResponse} from "../interfaces/logInOwner";
+import {LogInOwnerReturn} from "../interfaces/logInOwner";
 import {LogInOwnerDto} from "../owner/dto/log-in-owner.dto";
+import {LogInOwnerResponse} from "../interfaces/loginOwnerResponse";
+
+import { Request } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -28,10 +31,12 @@ export class AuthController {
   @Post('/login')
   logIn(@Body() logInOwnerDto: LogInOwnerDto): Promise<LogInOwnerResponse>{
     //utworzyc sesje(Token)
+
     return this.authService.logIn(logInOwnerDto)
   }
 
-  logOut(){
+  @Post('/logout')
+  logOut(@Req() request: Request){
     //zniszczyc sesje(Token)
   }
 
