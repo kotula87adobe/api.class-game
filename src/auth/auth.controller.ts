@@ -23,7 +23,7 @@ export class AuthController {
     return '<h1>AUTH</h1>'
   }
 
-  @Post('/create')
+  @Post('/register')
   //Dodatkowo utworzyc sesje
   createOwner(@Body() createOwnerDto: CreateOwnerDto): Promise<CreateOwnerResponse> {
     return this.authService.createOwner(createOwnerDto)
