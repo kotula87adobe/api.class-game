@@ -20,6 +20,19 @@ export class AuthService {
   ) {
   }
 
+  async checkIfOwnerIsLogged(authToken: string){
+    //TODO uzywac przy wszystkich operacjach wymagajacych autoryzacji ?
+    const ownerSessionToken = await OwnerSessionToken.findOne({
+      id:authToken,
+      isActive: true
+    })
+
+    console.log({authToken})
+
+    return ownerSessionToken;
+
+  }
+
   createOwner(createOwnerDto: CreateOwnerDto): Promise<CreateOwnerResponse> {
     return this.ownerService.create(createOwnerDto)
   }
@@ -55,8 +68,8 @@ export class AuthService {
 
     const token = request.headers.authorization
 
-    const ownerSessionToken = await OwnerSessionToken.findOne(token)
-    console.log({ownerSessionToken})
+    const ownerSessionToken = await this.checkIfOwnerIsLogged(token)
+
     if(ownerSessionToken){
       ownerSessionToken.isActive = false
       await ownerSessionToken.save()
