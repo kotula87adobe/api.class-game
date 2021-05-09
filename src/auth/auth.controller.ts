@@ -37,7 +37,13 @@ export class AuthController {
 
   @Post('/logout')
   logOut(@Req() request: Request){
-    //zniszczyc sesje(Token)
+    // zniszczyc sesje(Token)
+    // token pobrac z Request Headers ??
+
+    // console.log({query: request.query})
+    console.log(request.headers.authorization)
+
+    return 1
   }
 
 }
