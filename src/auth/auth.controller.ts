@@ -8,6 +8,7 @@ import {LogInOwnerDto} from "../owner/dto/log-in-owner.dto";
 import {LogInOwnerResponse} from "../interfaces/loginOwnerResponse";
 
 import { Request } from 'express';
+import {LogOutResponse} from "../interfaces/logOut";
 
 @Controller('auth')
 export class AuthController {
@@ -36,14 +37,14 @@ export class AuthController {
   }
 
   @Post('/logout')
-  logOut(@Req() request: Request){
+  logOut(@Req() request: Request): Promise<LogOutResponse>{
     // zniszczyc sesje(Token)
     // token pobrac z Request Headers ??
 
     // console.log({query: request.query})
     console.log(request.headers.authorization)
 
-    return 1
+    return this.authService.logOut(request)
   }
 
 }

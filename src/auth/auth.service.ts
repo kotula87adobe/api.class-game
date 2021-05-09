@@ -8,6 +8,8 @@ import {OwnerSessionTokenService} from "../owner-session-token/owner-session-tok
 import {LogInOwnerResponse} from "../interfaces/loginOwnerResponse";
 
 import {Request} from "express";
+import {OwnerSessionToken} from "../owner-session-token/entities/ownerSessionToken.entity";
+import {LogOutResponse} from "../interfaces/logOut";
 
 @Injectable()
 export class AuthService {
@@ -46,6 +48,30 @@ export class AuthService {
         error: 'Logowanie nie powiodlo się'
       }
     }
+
+  }
+
+  async logOut(request: Request): Promise<LogOutResponse> { //TODO dodac typ
+
+    const token = request.headers.authorization
+
+    const ownerSessionToken = await OwnerSessionToken.findOne(token)
+    console.log({ownerSessionToken})
+    if(ownerSessionToken){
+      ownerSessionToken.isActive = false
+      await ownerSessionToken.save()
+
+      return {
+        status: true,
+        msg: "Wylogowano poprawnie"
+      }
+    }else{
+      return {
+        status: false,
+        msg: "Nie mozna wykonac tej operacji"
+      }
+    }
+
 
   }
 }
