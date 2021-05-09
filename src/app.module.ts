@@ -8,7 +8,6 @@ import { VisitModule } from './visit/visit.module';
 import { AnswerModule } from './answer/answer.module';
 import { OwnerModule } from './owner/owner.module';
 import { AuthModule } from './auth/auth.module';
-import { SessionTokenModule } from './session-token/session-token.module';
 import { OwnerSessionTokenModule } from './owner-session-token/owner-session-token.module';
 
 @Module({
@@ -20,7 +19,6 @@ import { OwnerSessionTokenModule } from './owner-session-token/owner-session-tok
     AnswerModule,
     OwnerModule,
     AuthModule,
-    SessionTokenModule,
     OwnerSessionTokenModule
   ],
   controllers: [AppController],
