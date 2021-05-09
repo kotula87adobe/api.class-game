@@ -15,6 +15,11 @@ export class OwnerSessionToken extends BaseEntity{
   owner: Owner
 
   @Column({
+    default: true
+  })
+  isActive: boolean
+
+  @Column({
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
