@@ -39,4 +39,12 @@ export class DashboardController {
     return this.dashboardService.createAnswer(createAnswerDto);
   }
 
+  // Exercises
+
+  // createExercise()
+  // assignExercise()
+  // removeExercise()
+  // removeAssignedExercise()
+
+
 }

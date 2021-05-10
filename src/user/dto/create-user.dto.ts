@@ -1,5 +1,4 @@
 export class CreateUserDto {
-
-  ownerId: string
-
+  name: string;
+  ownerId: string;
 }

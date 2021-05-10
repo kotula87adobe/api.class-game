@@ -13,11 +13,39 @@ export class UserService {
 
     const user = new User()
 
-    const owner = await Owner.findOne(createUserDto.ownerId)
-    user.owner = owner
+    if(!!createUserDto.ownerId) {
+      var owner = await Owner.findOne(createUserDto.ownerId)
+      if(owner){
+        user.owner = owner
+      }
+    }
+
+    if(!!createUserDto.name && !!createUserDto.ownerId){
+
+      const userExist = await User.findOne({
+        name: createUserDto.name,
+        // owner: owner //TODO
+      })
+      if(!!userExist){
+        return {
+          status: false,
+          msg: 'Uczeń o takim imieniu już istnieje.'
+        }
+
+      }
+
+      user.name = createUserDto.name
+    }
+
     await user.save()
 
-    return user;
+    return {
+      status: true,
+      id: user.id,
+      name: !!createUserDto.name ? createUserDto.name : '',
+      ownerId: !!createUserDto.ownerId ? createUserDto.ownerId : null,
+      createdAt: user.createdAt
+    };
   }
 
   findAll() {
