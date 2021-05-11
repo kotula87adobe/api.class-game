@@ -5,6 +5,7 @@ import {UserModule} from "../user/user.module";
 import {VisitModule} from "../visit/visit.module";
 import {AnswerModule} from "../answer/answer.module";
 import {OwnerModule} from "../owner/owner.module";
+import {ExerciseModule} from "../exercise/exercise.module";
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import {OwnerModule} from "../owner/owner.module";
     forwardRef(()=>VisitModule),
     forwardRef(()=>AnswerModule),
     forwardRef(()=>OwnerModule),
+    forwardRef(()=>ExerciseModule),
   ],
   controllers: [DashboardController],
   providers: [DashboardService],

@@ -13,6 +13,7 @@ import {OwnerService} from "../owner/owner.service";
 import {CreateUserResponse} from "../interfaces/createUser";
 import {CreateOwnerDto} from "../owner/dto/create-owner.dto";
 import {CreateOwnerResponse} from "../interfaces/createOwner";
+import {ExerciseService} from "../exercise/exercise.service";
 
 @Injectable()
 export class DashboardService {
@@ -22,6 +23,7 @@ export class DashboardService {
     @Inject(VisitService) private visitService: VisitService,
     @Inject(AnswerService) private answerService: AnswerService,
     @Inject(OwnerService) private ownerService: OwnerService,
+    @Inject(ExerciseService) private exerciseService: ExerciseService,
   ) {}
 
   // Owner
