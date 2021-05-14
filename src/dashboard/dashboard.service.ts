@@ -19,6 +19,8 @@ import {ExerciseService} from "../exercise/exercise.service";
 import {CreateExerciseDto} from "../exercise/dto/create-exercise.dto";
 import {CreateExerciseResponse} from "../interfaces/Exercise/createExerciseResponse";
 import {AuthService} from "../auth/auth.service";
+import {UpdateExerciseDto} from "../exercise/dto/update-exercise.dto";
+import {UpdateExerciseResponse} from "../interfaces/Exercise/updateExerciseResponse";
 
 @Injectable()
 export class DashboardService {
@@ -59,7 +61,7 @@ export class DashboardService {
     const token = request.headers.authorization ? request.headers.authorization : ''
     // console.log({token})
     const owner = await this.ownerService.findOne(createExerciseDto.ownerId)
-    const isOwnerLogged = await this.authService.checkIfOwnerIsLogged(token, owner) //TODO
+    const isOwnerLogged = await this.authService.checkIfOwnerIsLogged(token, owner)
 
     // @ts-ignore
     if(isOwnerLogged){
@@ -70,13 +72,35 @@ export class DashboardService {
         url: exercise.url
       }
     }else{
-
       return {
         status: false,
         msg: 'Nie jestes zalogowany'
       }
-
     }
 
   }
+
+  async updateExercise(id: string, updateExerciseDto: UpdateExerciseDto, request: Request): Promise<UpdateExerciseResponse>{
+    const token = request.headers.authorization ? request.headers.authorization : ''
+    const owner = await this.ownerService.findOne(updateExerciseDto.ownerId)
+    const isOwnerLogged = await this.authService.checkIfOwnerIsLogged(token, owner)
+
+    // @ts-ignore
+    if(isOwnerLogged){
+      const exercise = await this.exerciseService.findOne(id)
+      exercise.url = updateExerciseDto.url
+      await exercise.save()
+      return {
+        status: true,
+        // @ts-ignore
+        url: exercise.url
+      }
+    }else{
+      return {
+        status: false,
+        msg: 'Nie jestes zalogowany'
+      }
+    }
+  }
+
 }

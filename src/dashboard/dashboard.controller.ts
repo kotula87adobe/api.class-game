@@ -12,6 +12,8 @@ import {CreateOwnerResponse} from "../interfaces/createOwner";
 import {CreateExerciseDto} from "../exercise/dto/create-exercise.dto";
 import {Request} from "express";
 import {CreateExerciseResponse} from "../interfaces/Exercise/createExerciseResponse";
+import {UpdateExerciseDto} from "../exercise/dto/update-exercise.dto";
+import {UpdateExerciseResponse} from "../interfaces/Exercise/updateExerciseResponse";
 
 @Controller('dashboard')
 export class DashboardController {
@@ -54,6 +56,14 @@ export class DashboardController {
     return this.dashboardService.createExercise(createExerciseDto, request)
   }
 
+  @Post('/exercise/:id')
+  updateExercise(
+    @Param('id') id: string,
+    @Body() updateExerciseDto: UpdateExerciseDto,
+    @Req() request: Request
+  ): Promise<UpdateExerciseResponse>{
+    return this.dashboardService.updateExercise(id, updateExerciseDto, request)
+  }
 
   // assignExercise()
   // removeExercise()

@@ -45,4 +45,8 @@ export class ExerciseService {
     }
   }
 
+  async findOne(id: string): Promise<Exercise> {
+    const exercise = await Exercise.findOne(id)
+    return exercise;
+  }
 }
