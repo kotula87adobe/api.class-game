@@ -15,4 +15,12 @@ export class OwnerSessionTokenService {
     return ownerSessionToken
   }
 
+  async findOne(token: string): Promise<OwnerSessionToken> {
+
+    const ownerSessionToken = OwnerSessionToken.findOne(token)
+
+    return ownerSessionToken
+
+  }
+
 }

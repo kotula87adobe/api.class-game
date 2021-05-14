@@ -1,5 +1,7 @@
 import {Body, Inject, Injectable} from '@nestjs/common';
 
+import {Request} from "express";
+
 import {UserService} from "../user/user.service";
 import {VisitService} from "../visit/visit.service";
 import {AnswerService} from "../answer/answer.service";
@@ -14,11 +16,15 @@ import {CreateUserResponse} from "../interfaces/createUser";
 import {CreateOwnerDto} from "../owner/dto/create-owner.dto";
 import {CreateOwnerResponse} from "../interfaces/createOwner";
 import {ExerciseService} from "../exercise/exercise.service";
+import {CreateExerciseDto} from "../exercise/dto/create-exercise.dto";
+import {CreateExerciseResponse} from "../interfaces/Exercise/createExerciseResponse";
+import {AuthService} from "../auth/auth.service";
 
 @Injectable()
 export class DashboardService {
 
   constructor(
+    @Inject(AuthService) private authService: AuthService,
     @Inject(UserService) private userService: UserService,
     @Inject(VisitService) private visitService: VisitService,
     @Inject(AnswerService) private answerService: AnswerService,
@@ -46,4 +52,31 @@ export class DashboardService {
     return this.answerService.create(createAnswerDto)
   }
 
+  // Exercise
+
+  async createExercise(createExerciseDto: CreateExerciseDto, request: Request): Promise<CreateExerciseResponse> {
+
+    const token = request.headers.authorization ? request.headers.authorization : ''
+    // console.log({token})
+    const owner = await this.ownerService.findOne(createExerciseDto.ownerId)
+    const isOwnerLogged = await this.authService.checkIfOwnerIsLogged(token, owner) //TODO
+
+    // @ts-ignore
+    if(isOwnerLogged){
+      const exercise = await this.exerciseService.create(createExerciseDto, owner)
+      return {
+        status: true,
+        // @ts-ignore
+        url: exercise.url
+      }
+    }else{
+
+      return {
+        status: false,
+        msg: 'Nie jestes zalogowany'
+      }
+
+    }
+
+  }
 }

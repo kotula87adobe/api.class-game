@@ -41,6 +41,13 @@ export class OwnerService {
       }
   }
 
+  async findOne(id: string): Promise<Owner>{
+
+    const owner = await Owner.findOne(id)
+    return owner
+
+  }
+
   async create(createOwnerDto: CreateOwnerDto): Promise<CreateOwnerResponse> {
 
     const newPassword = createOwnerDto.password.toString()

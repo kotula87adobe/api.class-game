@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, Req} from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
 import {CreateUserDto} from "../user/dto/create-user.dto";
 import {CreateVisitDto} from "../visit/dto/create-visit.dto";
@@ -9,6 +9,9 @@ import {Answer} from "../answer/entities/answer.entity";
 import {CreateUserResponse} from "../interfaces/createUser";
 import {CreateOwnerDto} from "../owner/dto/create-owner.dto";
 import {CreateOwnerResponse} from "../interfaces/createOwner";
+import {CreateExerciseDto} from "../exercise/dto/create-exercise.dto";
+import {Request} from "express";
+import {CreateExerciseResponse} from "../interfaces/Exercise/createExerciseResponse";
 
 @Controller('dashboard')
 export class DashboardController {
@@ -29,6 +32,9 @@ export class DashboardController {
     return this.dashboardService.createUser(createUserDto);
   }
 
+  // TODO updateUser
+  // TODO removeUser
+
   @Post('/visit/')
   createVisit(@Body() createVisitDto: CreateVisitDto): Promise<Visit> {
     return this.dashboardService.createVisit(createVisitDto);
@@ -41,7 +47,14 @@ export class DashboardController {
 
   // Exercises
 
-  // createExercise()
+  @Post('/exercise')
+  createExercise(
+    @Body() createExerciseDto: CreateExerciseDto,
+    @Req() request: Request): Promise<CreateExerciseResponse>{
+    return this.dashboardService.createExercise(createExerciseDto, request)
+  }
+
+
   // assignExercise()
   // removeExercise()
   // removeAssignedExercise()

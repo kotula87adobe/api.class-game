@@ -10,6 +10,7 @@ import {LogInOwnerResponse} from "../interfaces/loginOwnerResponse";
 import {Request} from "express";
 import {OwnerSessionToken} from "../owner-session-token/entities/ownerSessionToken.entity";
 import {LogOutResponse} from "../interfaces/logOut";
+import {Owner} from "../owner/entities/owner.entity";
 
 @Injectable()
 export class AuthService {
@@ -20,16 +21,15 @@ export class AuthService {
   ) {
   }
 
-  async checkIfOwnerIsLogged(authToken: string){
+  async checkIfOwnerIsLogged(authToken: string, owner: Owner): Promise<boolean> {
     //TODO uzywac przy wszystkich operacjach wymagajacych autoryzacji ?
     const ownerSessionToken = await OwnerSessionToken.findOne({
-      id:authToken,
+      id: authToken,
       isActive: true
-    })
+    }, {loadRelationIds: true})
 
-    console.log({authToken})
-
-    return ownerSessionToken;
+    // @ts-ignore
+    return ownerSessionToken.owner === owner.id;
 
   }
 
@@ -41,21 +41,17 @@ export class AuthService {
 
     const owner = await this.ownerService.logIn(logInOwnerDto)
 
-    if(owner){
+    if (owner) {
 
       const ownerSessionToken = await this.ownerSessionTokenService.create(owner)
 
-      //TOKEN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! wygenerowac
-      // const ownerSessionToken =  //TODO
-      // ownerSessionToken. // TODO cos nie łapie
-
-      return{
+      return {
         status: true,
         authToken: ownerSessionToken.id,
         ownerId: owner.id
       }
 
-    }else{
+    } else {
       return {
         status: false,
         error: 'Logowanie nie powiodlo się'
@@ -68,9 +64,9 @@ export class AuthService {
 
     const token = request.headers.authorization
 
-    const ownerSessionToken = await this.checkIfOwnerIsLogged(token)
+    const ownerSessionToken = await this.ownerSessionTokenService.findOne(token)
 
-    if(ownerSessionToken){
+    if (ownerSessionToken) {
       ownerSessionToken.isActive = false
       await ownerSessionToken.save()
 
@@ -78,7 +74,7 @@ export class AuthService {
         status: true,
         msg: "Wylogowano poprawnie"
       }
-    }else{
+    } else {
       return {
         status: false,
         msg: "Nie mozna wykonac tej operacji"

@@ -6,9 +6,11 @@ import {VisitModule} from "../visit/visit.module";
 import {AnswerModule} from "../answer/answer.module";
 import {OwnerModule} from "../owner/owner.module";
 import {ExerciseModule} from "../exercise/exercise.module";
+import {AuthModule} from "../auth/auth.module";
 
 @Module({
   imports: [
+    forwardRef(()=>AuthModule),
     forwardRef(()=>UserModule),
     forwardRef(()=>VisitModule),
     forwardRef(()=>AnswerModule),

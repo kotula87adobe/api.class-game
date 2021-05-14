@@ -1,4 +1,4 @@
-export type CreateExerciseResponse = {
+export type UpdateExerciseResponse = {
   status: boolean,
   url: string,
 } | {

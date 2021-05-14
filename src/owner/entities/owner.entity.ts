@@ -31,7 +31,8 @@ export class Owner extends BaseEntity {
   @JoinColumn()
   ownerSessionToken: OwnerSessionToken
 
-  @OneToMany(type => Exercise, entity=>entity.ex)
+  @OneToMany(type => Exercise, entity=>entity.owner)
+  @JoinColumn()
   exercise: Exercise
 
   @Column()
