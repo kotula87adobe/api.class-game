@@ -21,6 +21,8 @@ import {CreateExerciseResponse} from "../interfaces/Exercise/createExerciseRespo
 import {AuthService} from "../auth/auth.service";
 import {UpdateExerciseDto} from "../exercise/dto/update-exercise.dto";
 import {UpdateExerciseResponse} from "../interfaces/Exercise/updateExerciseResponse";
+import {RemoveExerciseResponse} from "../interfaces/Exercise/removeExerciseResponse";
+import {RemoveExerciseDto} from "../exercise/dto/remove-exercise.dto";
 
 @Injectable()
 export class DashboardService {
@@ -103,4 +105,13 @@ export class DashboardService {
     }
   }
 
+  async removeExercise(id: string, removeExerciseDto: RemoveExerciseDto, request: Request): Promise<RemoveExerciseResponse> {
+    //TODO if isLogged
+
+    const token = request.headers.authorization ? request.headers.authorization : ''
+    const owner = await this.ownerService.findOne(removeExerciseDto.ownerId)
+    const isOwnerLogged = await this.authService.checkIfOwnerIsLogged(token, owner)
+
+    return isOwnerLogged ?  this.exerciseService.remove(id) : {status: false, msg: 'Musisz byc zalogowany'}
+  }
 }

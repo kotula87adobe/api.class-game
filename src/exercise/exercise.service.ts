@@ -24,12 +24,15 @@ export class ExerciseService {
     }
   }
 
-  async remove(removeExerciseDto:RemoveExerciseDto): Promise<RemoveExerciseResponse>{
+  async remove(id: string,): Promise<RemoveExerciseResponse>{
 
-    const exercise = await Exercise.findOne(removeExerciseDto.id)
+    const exercise = await Exercise.findOne(id)
+    if(exercise) await exercise.remove()
 
-    return {
-      status: true,
+    if(exercise){
+      return {status: !!exercise}
+    }else{
+      return {status: !!exercise, msg: "Takie zadanie juz nie istnieje"}
     }
   }
 

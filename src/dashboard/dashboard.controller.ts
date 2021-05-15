@@ -14,6 +14,7 @@ import {Request} from "express";
 import {CreateExerciseResponse} from "../interfaces/Exercise/createExerciseResponse";
 import {UpdateExerciseDto} from "../exercise/dto/update-exercise.dto";
 import {UpdateExerciseResponse} from "../interfaces/Exercise/updateExerciseResponse";
+import {RemoveExerciseDto} from "../exercise/dto/remove-exercise.dto";
 
 @Controller('dashboard')
 export class DashboardController {
@@ -65,7 +66,16 @@ export class DashboardController {
     return this.dashboardService.updateExercise(id, updateExerciseDto, request)
   }
 
-  // assignExercise()
+  @Post('/exercise/remove/:id')
+  removeExercise(
+    @Param('id') id: string,
+    @Body() removeExerciseDto: RemoveExerciseDto,
+    @Req() request: Request
+  ){
+    return this.dashboardService.removeExercise(id, removeExerciseDto, request)
+  }
+
+  // assignExercise() //TODO !!!!!!!!!!!!!!!!!!!
   // removeExercise()
   // removeAssignedExercise()
 
