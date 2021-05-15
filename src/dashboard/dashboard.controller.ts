@@ -77,9 +77,9 @@ export class DashboardController {
 
 
 
-  assignExercise() //TODO !!!!!!!!!!!!!!!!!!!
+  // assignExercise() //TODO !!!!!!!!!!!!!!!!!!!
   // nowe entity id|exerciseId|userId|
 
-  getUserExercises()
+  //getUserExercises()
 
 }
