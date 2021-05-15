@@ -75,9 +75,11 @@ export class DashboardController {
     return this.dashboardService.removeExercise(id, removeExerciseDto, request)
   }
 
-  // assignExercise() //TODO !!!!!!!!!!!!!!!!!!!
-  // removeExercise()
-  // removeAssignedExercise()
 
+
+  assignExercise() //TODO !!!!!!!!!!!!!!!!!!!
+  // nowe entity id|exerciseId|userId|
+
+  getUserExercises()
 
 }
