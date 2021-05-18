@@ -21,8 +21,9 @@ export class AuthService {
   ) {
   }
 
-  async checkIfOwnerIsLogged(authToken: string, owner: Owner): Promise<boolean> {
+  async checkIfOwnerIsLogged(request: Request, owner: Owner): Promise<boolean> {
     //TODO uzywac przy wszystkich operacjach wymagajacych autoryzacji ?
+    const authToken = request.headers.authorization ? request.headers.authorization : ''
     const ownerSessionToken = await OwnerSessionToken.findOne({
       id: authToken,
       isActive: true

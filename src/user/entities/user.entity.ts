@@ -1,6 +1,17 @@
-import {BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  JoinTable
+} from "typeorm";
 import {Visit} from "../../visit/entities/visit.entity";
 import {Owner} from "../../owner/entities/owner.entity";
+import {Exercise} from "../../exercise/entities/exercise.entity";
 
 @Entity()
 export class User extends BaseEntity{
@@ -18,6 +29,10 @@ export class User extends BaseEntity{
   @OneToMany(type => Visit, entity => entity.user)
   @JoinColumn()
   visit: Visit
+
+  @ManyToMany(type=>Exercise,exercise=>exercise.users)
+  @JoinTable()
+  exercises: Exercise[]
 
   @Column({
     default: () => 'CURRENT_TIMESTAMP',

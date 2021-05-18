@@ -52,8 +52,9 @@ export class UserService {
     return `This action returns all user`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string): Promise<User> {
+    const user = await User.findOne(id);
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

@@ -15,6 +15,8 @@ import {CreateExerciseResponse} from "../interfaces/Exercise/createExerciseRespo
 import {UpdateExerciseDto} from "../exercise/dto/update-exercise.dto";
 import {UpdateExerciseResponse} from "../interfaces/Exercise/updateExerciseResponse";
 import {RemoveExerciseDto} from "../exercise/dto/remove-exercise.dto";
+import {AssignExerciseDto} from "../exercise/dto/assign-exercise.dto";
+import {AssignExerciseResponse} from "../interfaces/Exercise/assignExerciseResponse";
 
 @Controller('dashboard')
 export class DashboardController {
@@ -76,9 +78,15 @@ export class DashboardController {
   }
 
 
+  @Post('/exercise/assign/:exerciseId')
+  assignExercise(
+    @Param('exerciseId') exerciseId:string,
+    @Body() assignExerciseDto:AssignExerciseDto,
+    @Req() request: Request
+  ): Promise<AssignExerciseResponse>{
+    return this.dashboardService.assignExercise(exerciseId, assignExerciseDto, request)
+  }
 
-  // assignExercise() //TODO !!!!!!!!!!!!!!!!!!!
-  // nowe entity id|exerciseId|userId|
 
   //getUserExercises()
 

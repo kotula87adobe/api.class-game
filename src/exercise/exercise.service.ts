@@ -7,6 +7,9 @@ import {UpdateExerciseDto} from "./dto/update-exercise.dto";
 import {CreateExerciseResponse} from "../interfaces/Exercise/createExerciseResponse";
 import {RemoveExerciseResponse} from "../interfaces/Exercise/removeExerciseResponse";``
 import {UpdateExerciseResponse} from "../interfaces/Exercise/updateExerciseResponse";
+import {AssignExerciseDto} from "./dto/assign-exercise.dto";
+import {User} from "../user/entities/user.entity";
+import {AssignExerciseResponse} from "../interfaces/Exercise/assignExerciseResponse";
 
 @Injectable()
 export class ExerciseService {
@@ -52,4 +55,14 @@ export class ExerciseService {
     const exercise = await Exercise.findOne(id)
     return exercise;
   }
+
+  async assignExercise(exercise: Exercise, user: User): Promise<AssignExerciseResponse> {
+    user.exercises = [exercise]
+    user.save()
+    exercise.users = [user]
+    exercise.save()
+
+    return {status: true, exerciseId: exercise.id, userId: user.id, url: exercise.url}
+  }
+
 }

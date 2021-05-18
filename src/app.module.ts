@@ -21,7 +21,7 @@ import { ExerciseModule } from './exercise/exercise.module';
     OwnerModule,
     AuthModule,
     OwnerSessionTokenModule,
-    ExerciseModule
+    ExerciseModule,
   ],
   controllers: [AppController],
   providers: [AppService],

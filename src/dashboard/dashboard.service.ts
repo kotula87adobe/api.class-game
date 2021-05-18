@@ -23,6 +23,8 @@ import {UpdateExerciseDto} from "../exercise/dto/update-exercise.dto";
 import {UpdateExerciseResponse} from "../interfaces/Exercise/updateExerciseResponse";
 import {RemoveExerciseResponse} from "../interfaces/Exercise/removeExerciseResponse";
 import {RemoveExerciseDto} from "../exercise/dto/remove-exercise.dto";
+import {AssignExerciseDto, AssignExerciseDtoProperties} from "../exercise/dto/assign-exercise.dto";
+import {AssignExerciseResponse} from "../interfaces/Exercise/assignExerciseResponse";
 
 @Injectable()
 export class DashboardService {
@@ -60,10 +62,8 @@ export class DashboardService {
 
   async createExercise(createExerciseDto: CreateExerciseDto, request: Request): Promise<CreateExerciseResponse> {
 
-    const token = request.headers.authorization ? request.headers.authorization : ''
-    // console.log({token})
     const owner = await this.ownerService.findOne(createExerciseDto.ownerId)
-    const isOwnerLogged = await this.authService.checkIfOwnerIsLogged(token, owner)
+    const isOwnerLogged = await this.authService.checkIfOwnerIsLogged(request, owner)
 
     // @ts-ignore
     if(isOwnerLogged){
@@ -83,9 +83,8 @@ export class DashboardService {
   }
 
   async updateExercise(id: string, updateExerciseDto: UpdateExerciseDto, request: Request): Promise<UpdateExerciseResponse>{
-    const token = request.headers.authorization ? request.headers.authorization : ''
     const owner = await this.ownerService.findOne(updateExerciseDto.ownerId)
-    const isOwnerLogged = await this.authService.checkIfOwnerIsLogged(token, owner)
+    const isOwnerLogged = await this.authService.checkIfOwnerIsLogged(request, owner)
 
     // @ts-ignore
     if(isOwnerLogged){
@@ -108,10 +107,61 @@ export class DashboardService {
   async removeExercise(id: string, removeExerciseDto: RemoveExerciseDto, request: Request): Promise<RemoveExerciseResponse> {
     //TODO if isLogged
 
-    const token = request.headers.authorization ? request.headers.authorization : ''
     const owner = await this.ownerService.findOne(removeExerciseDto.ownerId)
-    const isOwnerLogged = await this.authService.checkIfOwnerIsLogged(token, owner)
+    const isOwnerLogged = await this.authService.checkIfOwnerIsLogged(request, owner)
 
     return isOwnerLogged ?  this.exerciseService.remove(id) : {status: false, msg: 'Musisz byc zalogowany'}
   }
+
+  async assignExercise(exerciseId:string, assignExerciseDto:AssignExerciseDto, request: Request): Promise<AssignExerciseResponse> {
+
+    // TODO jakas walidacja czy przeslano wszystkie pola formularza - zrobic z tego funkkcje sprawdzajaca klucze po petli z DTO
+    // Zwracac nazwe pola ktorego nie przeslano
+    // Mozna sprawdzac tez typy i walidowac na tym etapie
+    // Podchodzi to zadanie pod te interceptory !?!
+    // //TODO
+
+    //****************************
+    function compareKeys(form, dto) {
+      var aKeys = Object.keys(form).sort();
+      var bKeys = Object.keys(dto).sort();
+      console.log(JSON.stringify(aKeys))
+      console.log(JSON.stringify(bKeys))
+      return JSON.stringify(aKeys) === JSON.stringify(bKeys);
+    }
+
+    const sentAllDataInRequest = compareKeys(assignExerciseDto, AssignExerciseDtoProperties)
+
+    if(!sentAllDataInRequest){
+      return {status: false,msg: 'Nie przesłano wszystkich pol formularza'}
+    }
+    //*****************************
+
+    const owner = await this.ownerService.findOne(assignExerciseDto.ownerId)
+
+    if(!owner){
+      return {status: false,msg: 'Musisz być zalogowany!'}
+    }
+
+    const isLogged = await this.authService.checkIfOwnerIsLogged(request, owner)
+
+    if(!isLogged){
+      return {status: false,msg: 'Musisz być zalogowany!'}
+    }
+
+    const exercise = await this.exerciseService.findOne(exerciseId)
+
+    if(!exercise){
+      return {status: false,msg: 'Nie znaleziono zadania!'}
+    }
+
+    const user = await this.userService.findOne(assignExerciseDto.userId)
+
+    if(!user){
+      return {status: false,msg: 'Nie ma uzytlkownika ktoremu probujesz przypisac ti zadanie!'}
+    }
+
+    return this.exerciseService.assignExercise(exercise, user)
+  }
+
 }
