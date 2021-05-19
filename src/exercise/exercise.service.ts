@@ -57,12 +57,33 @@ export class ExerciseService {
   }
 
   async assignExercise(exercise: Exercise, user: User): Promise<AssignExerciseResponse> {
-    user.exercises = [exercise]
-    user.save()
-    exercise.users = [user]
-    exercise.save()
 
-    return {status: true, exerciseId: exercise.id, userId: user.id, url: exercise.url}
+    // nie sprawdza duplikatow i zastepuje a nie dodaje w tabeli //todo!!!!!!!!!!
+
+    let userExercises = await user.exercises;
+    userExercises = userExercises ? userExercises : []
+    let exerciseUsers = await exercise.users;
+    exerciseUsers = exerciseUsers ? exerciseUsers : []
+
+
+    const checkForDuplicate = userExercises.length && userExercises.filter(userExercise => userExercise.id === exercise.id)
+    console.log({checkForDuplicate})
+    // console.log({user})
+    // console.log({userExercises})
+
+    if(checkForDuplicate.length){
+      return {status: false, msg: 'Uczen ma juz przypisane to zadanie'}
+    }else{
+      userExercises.push(exercise)
+      await user.save()
+      exerciseUsers.push(user)
+      await exercise.save()
+
+      return {status: true, exerciseId: exercise.id, userId: user.id, url: exercise.url}
+
+    }
+
+
   }
 
 }

@@ -59,7 +59,7 @@ export class DashboardService {
   }
 
   // Exercise
-
+ //TODO chyba cos z data jest nie tak - createdAt, updatedAt -> updatedAt: Invalid Date
   async createExercise(createExerciseDto: CreateExerciseDto, request: Request): Promise<CreateExerciseResponse> {
 
     const owner = await this.ownerService.findOne(createExerciseDto.ownerId)
@@ -130,9 +130,9 @@ export class DashboardService {
       return JSON.stringify(aKeys) === JSON.stringify(bKeys);
     }
 
-    const sentAllDataInRequest = compareKeys(assignExerciseDto, AssignExerciseDtoProperties)
+    const isFormValid = compareKeys(assignExerciseDto, AssignExerciseDtoProperties)
 
-    if(!sentAllDataInRequest){
+    if(!isFormValid){
       return {status: false,msg: 'Nie przesłano wszystkich pol formularza'}
     }
     //*****************************

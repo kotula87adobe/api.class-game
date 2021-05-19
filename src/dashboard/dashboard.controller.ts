@@ -78,7 +78,7 @@ export class DashboardController {
   }
 
 
-  @Post('/exercise/assign/:exerciseId')
+  @Post('/exercise/assign/:exerciseId') //TODO sprawdzac czy user juz takiego zadania nie ma
   assignExercise(
     @Param('exerciseId') exerciseId:string,
     @Body() assignExerciseDto:AssignExerciseDto,
@@ -87,7 +87,17 @@ export class DashboardController {
     return this.dashboardService.assignExercise(exerciseId, assignExerciseDto, request)
   }
 
+  // assignToAllUsers(){} //dla wszystkich userow danego Ownera,
+      // sprawdzic czy sie nie dubluje,
+      // generalnie wywoalnie kilkukrotne metody this.dashboardService.assignExercise, choc nie bedzie to zbyt optymalne
 
-  //getUserExercises()
+  // getUserExercises(){} //@Get
+  // unsignExercise(){} //@Post
+  // unsignAllExercise(){} //@Post
+
+
+
+
+
 
 }

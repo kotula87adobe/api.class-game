@@ -25,7 +25,7 @@ export class Exercise extends BaseEntity {
   owner: Owner
 
   @ManyToMany(type => User,user => user.exercises)
-  users: User[]
+  users: Promise<User[]>
 
   @Column()
   createdAt: Date

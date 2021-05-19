@@ -54,6 +54,8 @@ export class UserService {
 
   async findOne(id: string): Promise<User> {
     const user = await User.findOne(id);
+    console.log({exercises: await user.exercises})
+    // const user = await User.findOne(id,{relations: ['owner']});
     return user;
   }
 

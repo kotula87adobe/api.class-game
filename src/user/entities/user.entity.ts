@@ -32,7 +32,7 @@ export class User extends BaseEntity{
 
   @ManyToMany(type=>Exercise,exercise=>exercise.users)
   @JoinTable()
-  exercises: Exercise[]
+  exercises: Promise<Exercise[]>
 
   @Column({
     default: () => 'CURRENT_TIMESTAMP',
