@@ -59,8 +59,9 @@ export class ExerciseService {
   async assignExercise(exercise: Exercise, user: User): Promise<AssignExerciseResponse> {
 
     // nie sprawdza duplikatow i zastepuje a nie dodaje w tabeli //todo!!!!!!!!!!
-
+    console.log({user})
     let userExercises = await user.exercises;
+
     userExercises = userExercises ? userExercises : []
     let exerciseUsers = await exercise.users;
     exerciseUsers = exerciseUsers ? exerciseUsers : []

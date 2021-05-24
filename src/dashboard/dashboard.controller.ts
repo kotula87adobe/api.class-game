@@ -16,7 +16,7 @@ import {UpdateExerciseDto} from "../exercise/dto/update-exercise.dto";
 import {UpdateExerciseResponse} from "../interfaces/Exercise/updateExerciseResponse";
 import {RemoveExerciseDto} from "../exercise/dto/remove-exercise.dto";
 import {AssignExerciseDto} from "../exercise/dto/assign-exercise.dto";
-import {AssignExerciseResponse} from "../interfaces/Exercise/assignExerciseResponse";
+import {AssignExerciseResponse, AssignExerciseResponseAll} from "../interfaces/Exercise/assignExerciseResponse";
 
 @Controller('dashboard')
 export class DashboardController {
@@ -77,8 +77,7 @@ export class DashboardController {
     return this.dashboardService.removeExercise(id, removeExerciseDto, request)
   }
 
-
-  @Post('/exercise/assign/:exerciseId') //TODO sprawdzac czy user juz takiego zadania nie ma
+  @Post('/exercise/assign/:exerciseId')
   assignExercise(
     @Param('exerciseId') exerciseId:string,
     @Body() assignExerciseDto:AssignExerciseDto,
@@ -87,9 +86,17 @@ export class DashboardController {
     return this.dashboardService.assignExercise(exerciseId, assignExerciseDto, request)
   }
 
-  // assignToAllUsers(){} //dla wszystkich userow danego Ownera,
-      // sprawdzic czy sie nie dubluje,
-      // generalnie wywoalnie kilkukrotne metody this.dashboardService.assignExercise, choc nie bedzie to zbyt optymalne
+//dla wszystkich userow danego Ownera,
+  // sprawdzic czy sie nie dubluje,
+  // generalnie wywoalnie kilkukrotne metody this.dashboardService.assignExercise, choc nie bedzie to zbyt optymalne
+  @Post('/exercise/assign/:exerciseId/all')
+  assignToAllUsers(
+    @Param('exerciseId') exerciseId: string,
+    @Body() assignExerciseDto: AssignExerciseDto,
+    @Req() request: Request
+  ): Promise<AssignExerciseResponseAll> {
+    return this.dashboardService.assignExerciseAll(exerciseId, assignExerciseDto, request)
+  }
 
   // getUserExercises(){} //@Get
   // unsignExercise(){} //@Post

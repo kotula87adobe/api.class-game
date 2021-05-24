@@ -7,3 +7,8 @@ export type AssignExerciseResponse = {
   status: false,
   msg: string
 }
+
+export type AssignExerciseResponseAll =
+  {
+    status: boolean
+  }

@@ -22,13 +22,13 @@ export class User extends BaseEntity{
   @Column()
   name: String
 
-  @ManyToOne(type=>Owner,entity => entity.user,{onDelete: "CASCADE"})
+  @ManyToOne(type=>Owner,entity => entity.users,{onDelete: "CASCADE"})
   @JoinColumn()
   owner: Owner
 
   @OneToMany(type => Visit, entity => entity.user)
   @JoinColumn()
-  visit: Visit
+  visit: Visit // zmienic na visits: Promise<Visit[]>
 
   @ManyToMany(type=>Exercise,exercise=>exercise.users)
   @JoinTable()

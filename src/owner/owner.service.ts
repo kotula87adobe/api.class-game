@@ -4,6 +4,7 @@ import {CreateOwnerDto} from "./dto/create-owner.dto";
 import {Owner} from "./entities/owner.entity";
 import {LogInOwnerReturn} from "../interfaces/logInOwner";
 import {LogInOwnerDto} from "./dto/log-in-owner.dto";
+import {User} from "../user/entities/user.entity";
 
 const bcrypt = require('bcrypt');
 
@@ -42,14 +43,16 @@ export class OwnerService {
   }
 
   async findOne(id: string): Promise<Owner>{
-
     const owner = await Owner.findOne(id)
     return owner
+  }
 
+  async findOneWithRelations(id: string, relations: string[]): Promise<Owner>{
+    const owner = await Owner.findOne({where: {  id}, relations: [...relations]});
+    return owner
   }
 
   async create(createOwnerDto: CreateOwnerDto): Promise<CreateOwnerResponse> {
-
     const newPassword = createOwnerDto.password.toString()
     const isPasswordValid = this.validatePassword(newPassword)
     if(isPasswordValid){

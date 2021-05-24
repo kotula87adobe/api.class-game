@@ -20,7 +20,7 @@ export class Exercise extends BaseEntity {
   @Column()
   url: string
 
-  @ManyToOne(type=>Owner,entity=>entity.exercise,{onDelete: "CASCADE"})
+  @ManyToOne(type=>Owner,entity=>entity.exercises,{onDelete: "CASCADE"})
   @JoinColumn()
   owner: Owner
 

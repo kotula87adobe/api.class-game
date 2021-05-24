@@ -25,7 +25,7 @@ export class Owner extends BaseEntity {
 
   @OneToMany(type => User, entity => entity.owner)
   @JoinColumn()
-  user: User
+  users: Promise<User[]>
 
   @OneToMany(type => OwnerSessionToken, entity => entity.owner)
   @JoinColumn()
@@ -33,7 +33,7 @@ export class Owner extends BaseEntity {
 
   @OneToMany(type => Exercise, entity=>entity.owner)
   @JoinColumn()
-  exercise: Exercise
+  exercises: Promise<Exercise[]>
 
   @Column()
   updatedAt: Date

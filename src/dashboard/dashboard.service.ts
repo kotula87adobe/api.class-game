@@ -24,7 +24,23 @@ import {UpdateExerciseResponse} from "../interfaces/Exercise/updateExerciseRespo
 import {RemoveExerciseResponse} from "../interfaces/Exercise/removeExerciseResponse";
 import {RemoveExerciseDto} from "../exercise/dto/remove-exercise.dto";
 import {AssignExerciseDto, AssignExerciseDtoProperties} from "../exercise/dto/assign-exercise.dto";
-import {AssignExerciseResponse} from "../interfaces/Exercise/assignExerciseResponse";
+import {AssignExerciseResponse, AssignExerciseResponseAll} from "../interfaces/Exercise/assignExerciseResponse";
+
+
+// TODO jakas walidacja czy przeslano wszystkie pola formularza - zrobic z tego funkkcje sprawdzajaca klucze po petli z DTO
+// Zwracac nazwe pola ktorego nie przeslano
+// Mozna sprawdzac tez typy i walidowac na tym etapie
+// Podchodzi to zadanie pod te interceptory !?!
+// //TODO
+
+//****************************
+export function formValidate(form, dto) {
+  var aKeys = Object.keys(form).sort();
+  var bKeys = Object.keys(dto).sort();
+  console.log(JSON.stringify(aKeys))
+  console.log(JSON.stringify(bKeys))
+  return JSON.stringify(aKeys) === JSON.stringify(bKeys);
+}
 
 @Injectable()
 export class DashboardService {
@@ -115,22 +131,7 @@ export class DashboardService {
 
   async assignExercise(exerciseId:string, assignExerciseDto:AssignExerciseDto, request: Request): Promise<AssignExerciseResponse> {
 
-    // TODO jakas walidacja czy przeslano wszystkie pola formularza - zrobic z tego funkkcje sprawdzajaca klucze po petli z DTO
-    // Zwracac nazwe pola ktorego nie przeslano
-    // Mozna sprawdzac tez typy i walidowac na tym etapie
-    // Podchodzi to zadanie pod te interceptory !?!
-    // //TODO
-
-    //****************************
-    function compareKeys(form, dto) {
-      var aKeys = Object.keys(form).sort();
-      var bKeys = Object.keys(dto).sort();
-      console.log(JSON.stringify(aKeys))
-      console.log(JSON.stringify(bKeys))
-      return JSON.stringify(aKeys) === JSON.stringify(bKeys);
-    }
-
-    const isFormValid = compareKeys(assignExerciseDto, AssignExerciseDtoProperties)
+    const isFormValid = formValidate(assignExerciseDto, AssignExerciseDtoProperties)
 
     if(!isFormValid){
       return {status: false,msg: 'Nie przesłano wszystkich pol formularza'}
@@ -164,4 +165,22 @@ export class DashboardService {
     return this.exerciseService.assignExercise(exercise, user)
   }
 
+  async assignExerciseAll(exerciseId: string, assignExerciseDto: AssignExerciseDto, request: Request): Promise<AssignExerciseResponseAll> {
+
+    const owner = await this.ownerService.findOneWithRelations(assignExerciseDto.ownerId, ['users'])
+
+    const users = await owner.users
+
+    const exercise = await this.exerciseService.findOne(exerciseId)
+
+    for (const user of users){
+      await this.exerciseService.assignExercise(exercise, user)
+    }
+
+    return {
+      status: true
+    }
+
+
+  }
 }
