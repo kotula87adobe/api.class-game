@@ -25,7 +25,9 @@ import {RemoveExerciseResponse} from "../interfaces/Exercise/removeExerciseRespo
 import {RemoveExerciseDto} from "../exercise/dto/remove-exercise.dto";
 import {AssignExerciseDto, AssignExerciseDtoProperties} from "../exercise/dto/assign-exercise.dto";
 import {AssignExerciseResponse, AssignExerciseResponseAll} from "../interfaces/Exercise/assignExerciseResponse";
-
+import {UnsignExerciseDto} from "../exercise/dto/unsign-exercise.dto";
+import {UnsignExerciseResponse} from "../interfaces/Exercise/unsignExerciseResponse";
+import {UnsignExerciseDtoProperties} from '../exercise/dto/unsign-exercise.dto'
 
 // TODO jakas walidacja czy przeslano wszystkie pola formularza - zrobic z tego funkkcje sprawdzajaca klucze po petli z DTO
 // Zwracac nazwe pola ktorego nie przeslano
@@ -141,7 +143,7 @@ export class DashboardService {
     const owner = await this.ownerService.findOne(assignExerciseDto.ownerId)
 
     if(!owner){
-      return {status: false,msg: 'Musisz być zalogowany!'}
+      return {status: false,msg: 'Brak ownera w bazie'}
     }
 
     const isLogged = await this.authService.checkIfOwnerIsLogged(request, owner)
@@ -182,5 +184,35 @@ export class DashboardService {
     }
 
 
+  }
+
+  async unsignExercise(exerciseId: string, unsignExerciseDto: UnsignExerciseDto, request: Request): Promise<UnsignExerciseResponse> {
+
+    const isFormValid = formValidate(unsignExerciseDto, UnsignExerciseDtoProperties)
+
+    if(!isFormValid){
+      return {status: false,msg: 'Nie przesłano wszystkich pol formularza'}
+    }
+    //*****************************
+    const owner = await this.ownerService.findOne(unsignExerciseDto.ownerId)
+
+    if(!owner){
+      return {status: false,msg: 'Brak ownera w bazie'}
+    }
+
+    const isLogged = await this.authService.checkIfOwnerIsLogged(request, owner)
+
+    if(!isLogged){
+      return {status: false,msg: 'Musisz być zalogowany!'}
+    }
+
+    const user = await this.userService.findOne(unsignExerciseDto.userId)
+    console.log(user.exercises)
+    user.exercises = user.exercises.filter(exercise=>exercise.id.toString() !== exerciseId)
+    await user.save()
+
+    return {
+      status: true
+    }
   }
 }

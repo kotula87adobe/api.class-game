@@ -53,7 +53,7 @@ export class UserService {
   }
 
   async findOne(id: string): Promise<User> {
-    const user = await User.findOne(id);
+    const user = await User.findOne(id,{relations: ['exercises']});
     return user;
   }
 

@@ -17,6 +17,8 @@ import {UpdateExerciseResponse} from "../interfaces/Exercise/updateExerciseRespo
 import {RemoveExerciseDto} from "../exercise/dto/remove-exercise.dto";
 import {AssignExerciseDto} from "../exercise/dto/assign-exercise.dto";
 import {AssignExerciseResponse, AssignExerciseResponseAll} from "../interfaces/Exercise/assignExerciseResponse";
+import {UnsignExerciseResponse} from "../interfaces/Exercise/unsignExerciseResponse";
+import {UnsignExerciseDto} from "../exercise/dto/unsign-exercise.dto";
 
 @Controller('dashboard')
 export class DashboardController {
@@ -32,7 +34,7 @@ export class DashboardController {
 
   // User
 
-  @Post('/user/')
+  @Post('/users/')
   createUser(@Body() createUserDto: CreateUserDto): Promise<CreateUserResponse> {
     return this.dashboardService.createUser(createUserDto);
   }
@@ -40,26 +42,26 @@ export class DashboardController {
   // TODO updateUser
   // TODO removeUser
 
-  @Post('/visit/')
+  @Post('/visits/')
   createVisit(@Body() createVisitDto: CreateVisitDto): Promise<Visit> {
     return this.dashboardService.createVisit(createVisitDto);
   }
 
-  @Post('/answer/')
+  @Post('/answers/')
   createAnswer(@Body() createAnswerDto: CreateAnswerDto): Promise<Answer> {
     return this.dashboardService.createAnswer(createAnswerDto);
   }
 
   // Exercises
 
-  @Post('/exercise')
+  @Post('/exercises')
   createExercise(
     @Body() createExerciseDto: CreateExerciseDto,
     @Req() request: Request): Promise<CreateExerciseResponse>{
     return this.dashboardService.createExercise(createExerciseDto, request)
   }
 
-  @Post('/exercise/:id')
+  @Post('/exercises/:id')
   updateExercise(
     @Param('id') id: string,
     @Body() updateExerciseDto: UpdateExerciseDto,
@@ -68,7 +70,7 @@ export class DashboardController {
     return this.dashboardService.updateExercise(id, updateExerciseDto, request)
   }
 
-  @Post('/exercise/remove/:id')
+  @Post('/exercises/remove/:id')
   removeExercise(
     @Param('id') id: string,
     @Body() removeExerciseDto: RemoveExerciseDto,
@@ -77,7 +79,7 @@ export class DashboardController {
     return this.dashboardService.removeExercise(id, removeExerciseDto, request)
   }
 
-  @Post('/exercise/assign/:exerciseId')
+  @Post('/exercises/assign/:exerciseId')
   assignExercise(
     @Param('exerciseId') exerciseId:string,
     @Body() assignExerciseDto:AssignExerciseDto,
@@ -89,7 +91,7 @@ export class DashboardController {
 //dla wszystkich userow danego Ownera,
   // sprawdzic czy sie nie dubluje,
   // generalnie wywoalnie kilkukrotne metody this.dashboardService.assignExercise, choc nie bedzie to zbyt optymalne
-  @Post('/exercise/assign/:exerciseId/all')
+  @Post('/exercises/assign/:exerciseId/all')
   assignToAllUsers(
     @Param('exerciseId') exerciseId: string,
     @Body() assignExerciseDto: AssignExerciseDto,
@@ -98,13 +100,18 @@ export class DashboardController {
     return this.dashboardService.assignExerciseAll(exerciseId, assignExerciseDto, request)
   }
 
-  // getUserExercises(){} //@Get
-  // unsignExercise(){} //@Post
+  @Post('/exercises/unsign/:exerciseId')
+  unsignExercise(
+    @Param('exerciseId') exerciseId: string,
+    @Body() unsignExerciseDto: UnsignExerciseDto,
+    @Req() request: Request
+  ): Promise<UnsignExerciseResponse> {
+    return this.dashboardService.unsignExercise(exerciseId, unsignExerciseDto, request)
+  }
+
+  // getUserExercises(){} //@Get //TODO
+  //@Post
   // unsignAllExercise(){} //@Post
-
-
-
-
 
 
 }
