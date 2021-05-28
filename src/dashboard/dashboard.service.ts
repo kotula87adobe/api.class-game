@@ -28,6 +28,7 @@ import {AssignExerciseResponse, AssignExerciseResponseAll} from "../interfaces/E
 import {UnsignExerciseDto} from "../exercise/dto/unsign-exercise.dto";
 import {UnsignExerciseResponse} from "../interfaces/Exercise/unsignExerciseResponse";
 import {UnsignExerciseDtoProperties} from '../exercise/dto/unsign-exercise.dto'
+import {Exercise} from "../exercise/entities/exercise.entity";
 
 // TODO jakas walidacja czy przeslano wszystkie pola formularza - zrobic z tego funkkcje sprawdzajaca klucze po petli z DTO
 // Zwracac nazwe pola ktorego nie przeslano
@@ -215,4 +216,9 @@ export class DashboardService {
       status: true
     }
   }
+
+  async getUserExercises(userId: string): Promise<Exercise[]> {
+    return (await this.userService.findOne(userId)).exercises
+  }
+
 }

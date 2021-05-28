@@ -19,6 +19,7 @@ import {AssignExerciseDto} from "../exercise/dto/assign-exercise.dto";
 import {AssignExerciseResponse, AssignExerciseResponseAll} from "../interfaces/Exercise/assignExerciseResponse";
 import {UnsignExerciseResponse} from "../interfaces/Exercise/unsignExerciseResponse";
 import {UnsignExerciseDto} from "../exercise/dto/unsign-exercise.dto";
+import {Exercise} from "../exercise/entities/exercise.entity";
 
 @Controller('dashboard')
 export class DashboardController {
@@ -110,6 +111,13 @@ export class DashboardController {
   }
 
   // getUserExercises(){} //@Get //TODO
+  @Get('/exercises/user/:userId')
+  getUserExercises(
+    @Param('userId') userId: string
+  ): Promise<Exercise[]>{
+    return this.dashboardService.getUserExercises(userId);
+  }
+
   //@Post
   // unsignAllExercise(){} //@Post
 
