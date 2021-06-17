@@ -1,4 +1,9 @@
 export class CreateOwnerDto {
-  email: string;
+  name: string;
   password: string;
+}
+
+export const CreateOwnerDtoDtoProperties = {
+  name: 'abcd',
+  password: 'abcd'
 }

@@ -1,6 +1,7 @@
 export type CreateOwnerResponse = {
+  error: false,
   id: string,
-  email: string,
+  name: string,
   createdAt: Date
 } | {
   error: string | boolean

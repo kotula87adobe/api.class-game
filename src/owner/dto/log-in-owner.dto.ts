@@ -1,4 +1,4 @@
 export class LogInOwnerDto {
-  email: string;
+  name: string;
   password: string;
 }

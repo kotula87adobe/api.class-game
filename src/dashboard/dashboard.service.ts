@@ -37,6 +37,7 @@ import {Exercise} from "../exercise/entities/exercise.entity";
 // //TODO
 
 //****************************
+//TODO powinno zwracac ktore pola sa źle wypełnione
 export function formValidate(form, dto) {
   var aKeys = Object.keys(form).sort();
   var bKeys = Object.keys(dto).sort();

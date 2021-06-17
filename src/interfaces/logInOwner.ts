@@ -7,6 +7,8 @@
 //   error: string
 // }
 
+//TODO Nie wiem czy to jest gdzies użyte
+
 import {Owner} from "../owner/entities/owner.entity";
 
 export type LogInOwnerReturn = Owner | false

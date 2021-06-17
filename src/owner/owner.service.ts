@@ -1,10 +1,12 @@
 import {Injectable} from '@nestjs/common';
 import {CreateOwnerResponse} from "../interfaces/createOwner";
-import {CreateOwnerDto} from "./dto/create-owner.dto";
+import {CreateOwnerDto, CreateOwnerDtoDtoProperties} from "./dto/create-owner.dto";
 import {Owner} from "./entities/owner.entity";
 import {LogInOwnerReturn} from "../interfaces/logInOwner";
 import {LogInOwnerDto} from "./dto/log-in-owner.dto";
 import {User} from "../user/entities/user.entity";
+import {AssignExerciseDtoProperties} from "../exercise/dto/assign-exercise.dto";
+import {formValidate} from "../dashboard/dashboard.service";
 
 const bcrypt = require('bcrypt');
 
@@ -13,13 +15,9 @@ const bcrypt = require('bcrypt');
 export class OwnerService {
 
   hashPassword(password): string{
-
     const saltRounds = 10;
-
     const hash = bcrypt.hashSync(password, saltRounds);
-
     return hash
-
   }
 
   checkPassword(password, hash){
@@ -42,6 +40,14 @@ export class OwnerService {
       }
   }
 
+  validateName(name: string): string | boolean {
+    if(name.length<3){
+      return 'Name must be minimum 3 sign long'
+    }else {
+      return false
+    }
+  }
+
   async findOne(id: string): Promise<Owner>{
     const owner = await Owner.findOne(id)
     return owner
@@ -53,6 +59,23 @@ export class OwnerService {
   }
 
   async create(createOwnerDto: CreateOwnerDto): Promise<CreateOwnerResponse> {
+
+    const isFormValid = formValidate(createOwnerDto, CreateOwnerDtoDtoProperties)
+
+    if(!isFormValid){
+      return {
+        error: 'Nie przesłano wszystkich pol formularza'
+      }
+    }
+
+    const newName = createOwnerDto.name.toString();
+    const isNameValid = this.validateName(newName);
+    if(isNameValid){
+      return {
+        error: isNameValid
+      }
+    }
+
     const newPassword = createOwnerDto.password.toString()
     const isPasswordValid = this.validatePassword(newPassword)
     if(isPasswordValid){
@@ -61,15 +84,17 @@ export class OwnerService {
       }
     }
 
-    const userExist = await Owner.findOne({email: createOwnerDto.email})
-    if(userExist){
-      return {
-        error: 'User with this email exist!'
+    if(createOwnerDto.name){
+      const userExist = await Owner.findOne({name: createOwnerDto.name})
+      if(userExist){
+        return {
+          error: 'User with this name/nick exist!'
+        }
       }
     }
 
     const owner = new Owner();
-    owner.email = createOwnerDto.email
+    owner.name = createOwnerDto.name
     owner.password = this.hashPassword(newPassword)
 
     // const compareTest = bcrypt.compareSync(newPassword, hash); // true
@@ -78,8 +103,9 @@ export class OwnerService {
     await owner.save()
 
     return {
+      error: false,
       id: owner.id,
-      email: owner.email,
+      name: owner.name,
       createdAt: owner.createdAt,
     }
   }
@@ -87,7 +113,7 @@ export class OwnerService {
   async logIn(logInOwnerDto: LogInOwnerDto): Promise<LogInOwnerReturn> {
 
     const owner = await Owner.findOne({
-      email: logInOwnerDto.email,
+      name: logInOwnerDto.name,
     })
 
     console.log({logInOwnerDto})

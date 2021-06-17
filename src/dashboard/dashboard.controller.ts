@@ -55,6 +55,7 @@ export class DashboardController {
 
   // Exercises
 
+
   @Post('/exercises')
   createExercise(
     @Body() createExerciseDto: CreateExerciseDto,

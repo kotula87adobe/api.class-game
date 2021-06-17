@@ -11,9 +11,9 @@ export class Owner extends BaseEntity {
   id: string;
 
   @Column({
-    unique: true
+    nullable: true
   })
-  email: string;
+  name: string;
 
   @Column()
   password: string;
